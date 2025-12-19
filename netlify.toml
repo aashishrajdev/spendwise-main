@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+# Environment variables for Clerk authentication URL paths
+# These are intentionally public (NEXT_PUBLIC_* prefix) and contain non-sensitive
+# URL path values. They must NOT be marked as secrets in Netlify.
+[build.environment]
+  NEXT_PUBLIC_CLERK_SIGN_IN_URL = "/sign-in"
+  NEXT_PUBLIC_CLERK_SIGN_UP_URL = "/sign-up"
+  NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL = "/"
+  NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL = "/"
