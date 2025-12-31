@@ -3,13 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider  = "mongodb"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String    @id @default(uuid()) @map("_id")
   clerkUserId   String    @unique // clerk user id
   email         String    @unique
   name          String?
@@ -24,10 +23,10 @@ model User {
 }
 
 model Account {
-  id           String        @id @default(uuid())
+  id           String        @id @default(uuid()) @map("_id")
   name         String
   type         AccountType
-  balance      Decimal       @default(0) // will ask inital balance while creating an account
+  balance      Float     @default(0) // will ask inital balance while creating an account
   isDefault    Boolean       @default(false)
   userId       String
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -40,9 +39,9 @@ model Account {
 }
 
 model Transaction {
-  id                String            @id @default(uuid())
+  id                String            @id @default(uuid()) @map("_id")
   type             TransactionType
-  amount           Decimal
+  amount           Float
   description      String?
   date             DateTime
   category         String           
@@ -66,15 +65,14 @@ model Transaction {
 
 
 model Budget {
-  id          String       @id @default(uuid())
-  amount      Decimal
+  id          String       @id @default(uuid()) @map("_id")
+  amount      Float
   lastAlertSent DateTime?  // Track when the last alert was sent
   userId      String       @unique
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  @@index([userId])
   @@map("budgets")
 }
 
